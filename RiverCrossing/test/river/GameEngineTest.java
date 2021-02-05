@@ -117,11 +117,22 @@ public class GameEngineTest {
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
-        /*
-         * TODO Once you transport the goose, go back alone, pick up the wolf, transport
-         * the wolf, then go back alone again. After you go back alone the second time,
-         * check that the game is lost.
-         */
+        // go back alone
+        engine.rowBoat();
+        Assert.assertFalse(engine.gameIsLost());
+        Assert.assertFalse(engine.gameIsWon());
+
+        // transport the wolf
+        engine.loadBoat(Item.TOP);
+        engine.rowBoat();
+        engine.unloadBoat(Item.TOP);
+        Assert.assertFalse(engine.gameIsLost());
+        Assert.assertFalse(engine.gameIsWon());
+
+        // go back alone
+        engine.rowBoat();
+        Assert.assertTrue(engine.gameIsLost());
+        Assert.assertFalse(engine.gameIsWon());
     }
 
     @Test
