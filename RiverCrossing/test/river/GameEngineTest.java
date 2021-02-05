@@ -42,10 +42,14 @@ public class GameEngineTest {
         GameEngine engine = new GameEngine();
         Assert.assertEquals(Location.START, engine.getLocation(Item.MID));
 
-        /*
-         * TODO Transport he goose to the other side, unload it, and check that it has
-         * the appropriate location
-         */
+        engine.loadBoat(Item.MID);
+        Assert.assertEquals(Location.BOAT, engine.getLocation(Item.MID));
+
+        engine.rowBoat();
+        Assert.assertEquals(Location.BOAT, engine.getLocation(Item.MID));
+
+        engine.unloadBoat(Item.MID);
+        Assert.assertEquals(Location.FINISH, engine.getLocation(Item.MID));
     }
 
     @Test
