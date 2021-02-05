@@ -70,11 +70,39 @@ public class GameEngineTest {
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
-        /*
-         * TODO The steps above are the first two steps in a winning game, complete the
-         * steps and check that the game is won.
-         */
+        // swap the position of goose and beans
+        engine.loadBoat(Item.BOTTOM);
+        engine.rowBoat();
+        engine.unloadBoat(Item.BOTTOM);
+        engine.loadBoat(Item.MID);
+        Assert.assertFalse(engine.gameIsLost());
+        Assert.assertFalse(engine.gameIsWon());
 
+        // go back alone
+        engine.rowBoat();
+        Assert.assertFalse(engine.gameIsLost());
+        Assert.assertFalse(engine.gameIsWon());
+
+        // transport wolf
+        engine.unloadBoat(Item.MID);
+        engine.loadBoat(Item.TOP);
+        engine.rowBoat();
+        engine.unloadBoat(Item.TOP);
+        Assert.assertFalse(engine.gameIsLost());
+        Assert.assertFalse(engine.gameIsWon());
+
+        // go back alone
+        engine.rowBoat();
+        Assert.assertFalse(engine.gameIsLost());
+        Assert.assertFalse(engine.gameIsWon());
+
+        // transport goose and win the game
+        engine.loadBoat(Item.MID);
+        engine.rowBoat();
+        engine.unloadBoat(Item.MID);
+        engine.unloadBoat(Item.PLAYER);
+        Assert.assertFalse(engine.gameIsLost());
+        Assert.assertTrue(engine.gameIsWon());
     }
 
     @Test
