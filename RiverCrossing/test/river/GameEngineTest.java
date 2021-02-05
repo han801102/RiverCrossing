@@ -19,7 +19,22 @@ public class GameEngineTest {
         Assert.assertEquals("Farmer", farmer.getName());
         Assert.assertEquals(Location.START, farmer.getLocation());
         Assert.assertEquals("", farmer.getSound());
-        /* TODO Check getters for wolf, goose, and beans */
+
+        GameObject wolf = new Wolf();
+        Assert.assertEquals("Wolf", wolf.getName());
+        Assert.assertEquals(Location.START, wolf.getLocation());
+        Assert.assertEquals("Howl", wolf.getSound());
+
+        GameObject goose = new Goose();
+        Assert.assertEquals("Goose", goose.getName());
+        Assert.assertEquals(Location.START, goose.getLocation());
+        Assert.assertEquals("Honk", goose.getSound());
+
+
+        GameObject beans = new Beans();
+        Assert.assertEquals("Beans", beans.getName());
+        Assert.assertEquals(Location.START, beans.getLocation());
+        Assert.assertEquals("", beans.getSound());
     }
 
     @Test
