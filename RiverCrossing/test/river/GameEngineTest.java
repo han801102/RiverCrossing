@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import river.GameEngine.Item;
+import java.awt.*;
 
 public class GameEngineTest {
 
@@ -18,42 +18,42 @@ public class GameEngineTest {
     @Test
     public void testObjectCallThroughs() {
 
-        Assert.assertEquals("Farmer", engine.getItemName(Item.FARMER));
-        Assert.assertEquals(Location.START, engine.getItemLocation(Item.FARMER));
-        Assert.assertEquals("", engine.getItemSound(Item.FARMER));
+        Assert.assertEquals("Farmer", engine.getItemLabel(Item.ITEM_3));
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_3));
+        Assert.assertEquals(Color.MAGENTA, engine.getItemColor(Item.ITEM_3));
 
-        Assert.assertEquals("Wolf", engine.getItemName(Item.WOLF));
-        Assert.assertEquals(Location.START, engine.getItemLocation(Item.WOLF));
-        Assert.assertEquals("Howl", engine.getItemSound(Item.WOLF));
+        Assert.assertEquals("Wolf", engine.getItemLabel(Item.ITEM_2));
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_2));
+        Assert.assertEquals(Color.CYAN, engine.getItemColor(Item.ITEM_2));
 
-        Assert.assertEquals("Goose", engine.getItemName(Item.GOOSE));
-        Assert.assertEquals(Location.START, engine.getItemLocation(Item.GOOSE));
-        Assert.assertEquals("Honk", engine.getItemSound(Item.GOOSE));
+        Assert.assertEquals("Goose", engine.getItemLabel(Item.ITEM_1));
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_1));
+        Assert.assertEquals(Color.CYAN, engine.getItemColor(Item.ITEM_1));
 
-        Assert.assertEquals("Beans", engine.getItemName(Item.BEANS));
-        Assert.assertEquals(Location.START, engine.getItemLocation(Item.BEANS));
-        Assert.assertEquals("", engine.getItemSound(Item.BEANS));
+        Assert.assertEquals("Beans", engine.getItemLabel(Item.ITEM_0));
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_0));
+        Assert.assertEquals(Color.CYAN, engine.getItemColor(Item.ITEM_0));
     }
 
     @Test
     public void testMidTransport() {
-        Assert.assertEquals(Location.START, engine.getItemLocation(Item.GOOSE));
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_1));
 
-        engine.loadBoat(Item.GOOSE);
-        Assert.assertEquals(Location.BOAT, engine.getItemLocation(Item.GOOSE));
+        engine.loadBoat(Item.ITEM_1);
+        Assert.assertEquals(Location.BOAT, engine.getItemLocation(Item.ITEM_1));
 
         engine.rowBoat();
-        Assert.assertEquals(Location.BOAT, engine.getItemLocation(Item.GOOSE));
+        Assert.assertEquals(Location.BOAT, engine.getItemLocation(Item.ITEM_1));
 
-        engine.unloadBoat(Item.GOOSE);
-        Assert.assertEquals(Location.FINISH, engine.getItemLocation(Item.GOOSE));
+        engine.unloadBoat(Item.ITEM_1);
+        Assert.assertEquals(Location.FINISH, engine.getItemLocation(Item.ITEM_1));
     }
 
     @Test
     public void testWinningGame() {
         // transport the goose
-        engine.loadBoat(Item.FARMER);
-        engine.transport(Item.GOOSE);
+        engine.loadBoat(Item.ITEM_3);
+        engine.transport(Item.ITEM_1);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
@@ -63,19 +63,19 @@ public class GameEngineTest {
         Assert.assertFalse(engine.gameIsWon());
 
         // transport the beans
-        engine.transport(Item.BEANS);
+        engine.transport(Item.ITEM_0);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
         // go back with the goose
-        engine.loadBoat(Item.GOOSE);
+        engine.loadBoat(Item.ITEM_1);
         engine.rowBoat();
-        engine.unloadBoat(Item.GOOSE);
+        engine.unloadBoat(Item.ITEM_1);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
         // transport the wolf
-        engine.transport(Item.WOLF);
+        engine.transport(Item.ITEM_2);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
@@ -85,8 +85,8 @@ public class GameEngineTest {
         Assert.assertFalse(engine.gameIsWon());
 
         // transport goose and finish the game
-        engine.transport(Item.GOOSE);
-        engine.unloadBoat(Item.FARMER);
+        engine.transport(Item.ITEM_1);
+        engine.unloadBoat(Item.ITEM_3);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertTrue(engine.gameIsWon());
     }
@@ -94,7 +94,7 @@ public class GameEngineTest {
     @Test
     public void testLosingGame() {
         // transport the goose
-        engine.transport(Item.GOOSE);
+        engine.transport(Item.ITEM_1);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
@@ -104,7 +104,7 @@ public class GameEngineTest {
         Assert.assertFalse(engine.gameIsWon());
 
         // transport the wolf
-        engine.transport(Item.WOLF);
+        engine.transport(Item.ITEM_2);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
@@ -117,24 +117,24 @@ public class GameEngineTest {
     @Test
     public void testError() {
         // transport the goose
-        engine.transport(Item.GOOSE);
+        engine.transport(Item.ITEM_1);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
 
         // save the state
-        Location wolfLoc = engine.getItemLocation(Item.WOLF);
-        Location gooseLoc = engine.getItemLocation(Item.GOOSE);
-        Location beansLoc = engine.getItemLocation(Item.BEANS);
-        Location farmerLoc = engine.getItemLocation(Item.FARMER);
+        Location wolfLoc = engine.getItemLocation(Item.ITEM_2);
+        Location gooseLoc = engine.getItemLocation(Item.ITEM_1);
+        Location beansLoc = engine.getItemLocation(Item.ITEM_0);
+        Location farmerLoc = engine.getItemLocation(Item.ITEM_3);
 
         // This action should do nothing since the wolf is not on the same shore as the
         // boat
-        engine.loadBoat(Item.WOLF);
+        engine.loadBoat(Item.ITEM_2);
 
         // check that the state has not changed
-        Assert.assertEquals(wolfLoc, engine.getItemLocation(Item.WOLF));
-        Assert.assertEquals(gooseLoc, engine.getItemLocation(Item.GOOSE));
-        Assert.assertEquals(beansLoc, engine.getItemLocation(Item.BEANS));
-        Assert.assertEquals(farmerLoc, engine.getItemLocation(Item.FARMER));
+        Assert.assertEquals(wolfLoc, engine.getItemLocation(Item.ITEM_2));
+        Assert.assertEquals(gooseLoc, engine.getItemLocation(Item.ITEM_1));
+        Assert.assertEquals(beansLoc, engine.getItemLocation(Item.ITEM_0));
+        Assert.assertEquals(farmerLoc, engine.getItemLocation(Item.ITEM_3));
     }
 }

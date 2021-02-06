@@ -1,19 +1,21 @@
 package river;
 
+import java.awt.*;
+
 public class GameObject {
 
-    private String name;
+    private String label;
     private Location location;
-    private String sound;
+    private Color color;
 
-    public GameObject(String name, Location location, String sound) {
-        this.name = name;
+    public GameObject(String label, Location location, Color color) {
+        this.label = label;
         this.location = location;
-        this.sound = sound;
+        this.color = color;
     }
 
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
     public Location getLocation() {
@@ -24,8 +26,7 @@ public class GameObject {
         this.location = loc;
     }
 
-    public String getSound() {
-        return sound;
+    public Color getColor() {
+        return color;
     }
-
 }

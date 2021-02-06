@@ -1,37 +1,34 @@
 package river;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GameEngine {
-
-    public enum Item {
-        WOLF, GOOSE, BEANS, FARMER;
-    }
 
     private Map<Item, GameObject> objectMap;
     private Location boatLocation;
 
     public GameEngine() {
         objectMap = new HashMap<>();
-        objectMap.put(Item.WOLF, new GameObject("Wolf", Location.START, "Howl"));
-        objectMap.put(Item.GOOSE, new GameObject("Goose", Location.START, "Honk"));
-        objectMap.put(Item.BEANS, new GameObject("Beans", Location.START, ""));
-        objectMap.put(Item.FARMER, new GameObject("Farmer", Location.START, ""));
+        objectMap.put(Item.ITEM_2, new GameObject("Wolf", Location.START, Color.CYAN));
+        objectMap.put(Item.ITEM_1, new GameObject("Goose", Location.START, Color.CYAN));
+        objectMap.put(Item.ITEM_0, new GameObject("Beans", Location.START, Color.CYAN));
+        objectMap.put(Item.ITEM_3, new GameObject("Farmer", Location.START, Color.MAGENTA));
 
         boatLocation = Location.START;
     }
 
-    public String getItemName(Item id) {
-        return objectMap.get(id).getName();
+    public String getItemLabel(Item id) {
+        return objectMap.get(id).getLabel();
     }
 
     public Location getItemLocation(Item id) {
         return objectMap.get(id).getLocation();
     }
 
-    public String getItemSound(Item id) {
-        return objectMap.get(id).getSound();
+    public Color getItemColor(Item id) {
+        return objectMap.get(id).getColor();
     }
 
     public Location getBoatLocation() {
@@ -46,22 +43,22 @@ public class GameEngine {
 
     public void loadBoat(Item id) {
         switch (id) {
-            case WOLF:
-                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.GOOSE).getLocation() != Location.BOAT && objectMap.get(Item.BEANS).getLocation() != Location.BOAT) {
+            case ITEM_2:
+                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.ITEM_1).getLocation() != Location.BOAT && objectMap.get(Item.ITEM_0).getLocation() != Location.BOAT) {
                     objectMap.get(id).setLocation(Location.BOAT);
                 }
                 break;
-            case GOOSE:
-                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.WOLF).getLocation() != Location.BOAT && objectMap.get(Item.BEANS).getLocation() != Location.BOAT) {
+            case ITEM_1:
+                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.ITEM_2).getLocation() != Location.BOAT && objectMap.get(Item.ITEM_0).getLocation() != Location.BOAT) {
                     objectMap.get(id).setLocation(Location.BOAT);
                 }
                 break;
-            case BEANS:
-                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.WOLF).getLocation() != Location.BOAT && objectMap.get(Item.GOOSE).getLocation() != Location.BOAT) {
+            case ITEM_0:
+                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.ITEM_2).getLocation() != Location.BOAT && objectMap.get(Item.ITEM_1).getLocation() != Location.BOAT) {
                     objectMap.get(id).setLocation(Location.BOAT);
                 }
                 break;
-            case FARMER:
+            case ITEM_3:
                 if (objectMap.get(id).getLocation() == boatLocation) {
                     objectMap.get(id).setLocation(Location.BOAT);
                 }
@@ -95,23 +92,23 @@ public class GameEngine {
     }
 
     public boolean gameIsLost() {
-        if (objectMap.get(Item.GOOSE).getLocation() == Location.BOAT) {
+        if (objectMap.get(Item.ITEM_1).getLocation() == Location.BOAT) {
             return false;
         }
 
-        if (objectMap.get(Item.GOOSE).getLocation() == objectMap.get(Item.FARMER).getLocation()) {
+        if (objectMap.get(Item.ITEM_1).getLocation() == objectMap.get(Item.ITEM_3).getLocation()) {
             return false;
         }
 
-        if (objectMap.get(Item.GOOSE).getLocation() == boatLocation) {
+        if (objectMap.get(Item.ITEM_1).getLocation() == boatLocation) {
             return false;
         }
 
-        if (objectMap.get(Item.GOOSE).getLocation() == objectMap.get(Item.WOLF).getLocation()) {
+        if (objectMap.get(Item.ITEM_1).getLocation() == objectMap.get(Item.ITEM_2).getLocation()) {
             return true;
         }
 
-        if (objectMap.get(Item.GOOSE).getLocation() == objectMap.get(Item.BEANS).getLocation()) {
+        if (objectMap.get(Item.ITEM_1).getLocation() == objectMap.get(Item.ITEM_0).getLocation()) {
             return true;
         }
         return false;
