@@ -38,6 +38,12 @@ public class GameEngine {
         return boatLocation;
     }
 
+    public void transport(Item id) {
+        loadBoat(id);
+        rowBoat();
+        unloadBoat(id);
+    }
+
     public void loadBoat(Item id) {
         switch (id) {
             case WOLF:
