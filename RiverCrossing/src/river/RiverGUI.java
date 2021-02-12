@@ -21,7 +21,7 @@ public class RiverGUI extends JPanel implements MouseListener {
     private Map<Item, Rectangle> objRects = new HashMap<>();
 
     private Rectangle boatRect;
-
+    private int passengers = 0;
 
     private final int leftBaseX = 20;
     private final int leftBaseY = 275;
@@ -50,7 +50,7 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     public RiverGUI() {
 
-        engine = new GameEngine();
+        engine = new FarmerGameEngine();
         addMouseListener(this);
     }
 
@@ -92,6 +92,8 @@ public class RiverGUI extends JPanel implements MouseListener {
     }
 
     private void refreshItemRectangles() {
+        passengers = 0;
+
         refreshItemRect(Item.ITEM_0);
         refreshItemRect(Item.ITEM_1);
         refreshItemRect(Item.ITEM_2);
@@ -104,8 +106,9 @@ public class RiverGUI extends JPanel implements MouseListener {
         int y;
         switch (engine.getItemLocation(id)) {
             case BOAT:
-                x = leftBoatX + (engine.getBoatLocation() == Location.FINISH ? boatMoveDistance : 0) + (id == Item.ITEM_3 ? 0 : 60);
+                x = leftBoatX + (engine.getBoatLocation() == Location.FINISH ? boatMoveDistance : 0) + (passengers * 60 );
                 y = leftBoatY - 60;
+                passengers++;
                 break;
             case START:
             case FINISH:
@@ -132,7 +135,7 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     private void paintItem(Graphics g, Item id) {
         paintRectangle(g, engine.getItemColor(id), objRects.get(id));
-        paintLabelInRectangle(g, engine.getItemLabel(id).substring(0, 1), objRects.get(id));
+        paintLabelInRectangle(g, engine.getItemLabel(id), objRects.get(id));
     }
 
     private void paintBoat(Graphics g) {

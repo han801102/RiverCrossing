@@ -1,124 +1,92 @@
 package river;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.Color;
 
-public class GameEngine {
+public interface GameEngine {
 
-    private Map<Item, GameObject> objectMap;
-    private Location boatLocation;
+    /**
+     * Returns the label of the specified item. This method may be used by a GUI
+     * (for example) to put the label string inside of a rectangle. A label is
+     * typically one or two characters long.
+     *
+     * @param item the item with the desired label
+     * @return the label of the specified item
+     */
+    String getItemLabel(Item item);
 
-    public GameEngine() {
-        objectMap = new HashMap<>();
-        objectMap.put(Item.ITEM_2, new GameObject("Wolf", Location.START, Color.CYAN));
-        objectMap.put(Item.ITEM_1, new GameObject("Goose", Location.START, Color.CYAN));
-        objectMap.put(Item.ITEM_0, new GameObject("Beans", Location.START, Color.CYAN));
-        objectMap.put(Item.ITEM_3, new GameObject("Farmer", Location.START, Color.MAGENTA));
+    /**
+     * Returns the color of the specified item. This method may be used by a GUI
+     * (for example) to color a rectangle that represents the item.
+     *
+     * @param item the item with the desired color
+     * @return the color of the specified item
+     */
+    Color getItemColor(Item item);
 
-        boatLocation = Location.START;
-    }
+    /**
+     * Returns the location of the specified item. The location may be START,
+     * FINISH, or BOAT.
+     *
+     * @param item the item with the desired location
+     * @return the location of the specified item
+     */
+    Location getItemLocation(Item item);
 
-    public String getItemLabel(Item id) {
-        return objectMap.get(id).getLabel();
-    }
+    /**
+     * Returns the location of the boat.
+     *
+     * @return the location of the boat
+     */
+    Location getBoatLocation();
 
-    public Location getItemLocation(Item id) {
-        return objectMap.get(id).getLocation();
-    }
+    /**
+     * Loads the specified item onto the boat. Assuming that all the
+     * required conditions are met, this method will change the location
+     * of the specified item to BOAT. Typically, the following conditions
+     * must be met: (1) the item's location and the boat's location
+     * must be the same, and (2) there must be room on the boat for the
+     * item. If any condition is not met, this method does nothing.
+     *
+     * @param item the item to load onto the boat
+     */
+    void loadBoat(Item item);
 
-    public Color getItemColor(Item id) {
-        return objectMap.get(id).getColor();
-    }
+    /**
+     * Unloads the specified item from the boat. If the item is on the boat
+     * (the item's location is BOAT), then the item's location is changed to
+     * the boat's location. If the item is not on the boat, then this method
+     * does nothing.
+     *
+     * @param item the item to be unloaded
+     */
+    void unloadBoat(Item item);
 
-    public Location getBoatLocation() {
-        return boatLocation;
-    }
+    /**
+     * Rows the boat to the other shore. This method will only change the
+     * location of the boat if the boat has a passenger that can drive the boat.
+     */
+    void rowBoat();
 
-    public void transport(Item id) {
-        loadBoat(id);
-        rowBoat();
-        unloadBoat(id);
-    }
+    /**
+     * True when the location of all the game items is FINISH.
+     *
+     * @return true if all game items of a location of FINISH, false otherwise
+     */
+    boolean gameIsWon();
 
-    public void loadBoat(Item id) {
-        switch (id) {
-            case ITEM_2:
-                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.ITEM_1).getLocation() != Location.BOAT && objectMap.get(Item.ITEM_0).getLocation() != Location.BOAT) {
-                    objectMap.get(id).setLocation(Location.BOAT);
-                }
-                break;
-            case ITEM_1:
-                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.ITEM_2).getLocation() != Location.BOAT && objectMap.get(Item.ITEM_0).getLocation() != Location.BOAT) {
-                    objectMap.get(id).setLocation(Location.BOAT);
-                }
-                break;
-            case ITEM_0:
-                if (objectMap.get(id).getLocation() == boatLocation && objectMap.get(Item.ITEM_2).getLocation() != Location.BOAT && objectMap.get(Item.ITEM_1).getLocation() != Location.BOAT) {
-                    objectMap.get(id).setLocation(Location.BOAT);
-                }
-                break;
-            case ITEM_3:
-                if (objectMap.get(id).getLocation() == boatLocation) {
-                    objectMap.get(id).setLocation(Location.BOAT);
-                }
-            default: // do nothing
-        }
-    }
+    /**
+     * True when one or more implementation-specific conditions are met.
+     * The conditions have to do with which items are on which side of the
+     * river. If an item is in the boat, it is typically still considered
+     * to be on the same side of the river as the boat.
+     *
+     * @return true when one or more game-specific conditions are met, false
+     * otherwise
+     */
+    boolean gameIsLost();
 
-    public void unloadBoat(Item id) {
-        if (objectMap.get(id).getLocation() == Location.BOAT) {
-            objectMap.get(id).setLocation(boatLocation);
-        }
-    }
-
-    public void rowBoat() {
-        assert (boatLocation != Location.BOAT);
-        if (boatLocation == Location.START) {
-            boatLocation = Location.FINISH;
-        } else {
-            boatLocation = Location.START;
-        }
-    }
-
-    public boolean gameIsWon() {
-        for (Item key : objectMap.keySet()) {
-            if (objectMap.get(key).getLocation() != Location.FINISH) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public boolean gameIsLost() {
-        if (objectMap.get(Item.ITEM_1).getLocation() == Location.BOAT) {
-            return false;
-        }
-
-        if (objectMap.get(Item.ITEM_1).getLocation() == objectMap.get(Item.ITEM_3).getLocation()) {
-            return false;
-        }
-
-        if (objectMap.get(Item.ITEM_1).getLocation() == boatLocation) {
-            return false;
-        }
-
-        if (objectMap.get(Item.ITEM_1).getLocation() == objectMap.get(Item.ITEM_2).getLocation()) {
-            return true;
-        }
-
-        if (objectMap.get(Item.ITEM_1).getLocation() == objectMap.get(Item.ITEM_0).getLocation()) {
-            return true;
-        }
-        return false;
-    }
-
-    public void resetGame() {
-        for (Item key : objectMap.keySet()) {
-            objectMap.get(key).setLocation(Location.START);
-        }
-        boatLocation = Location.START;
-    }
-
+    /**
+     * Resets the game.
+     */
+    void resetGame();
 }
