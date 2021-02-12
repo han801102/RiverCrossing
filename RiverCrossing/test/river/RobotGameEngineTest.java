@@ -27,11 +27,11 @@ public class RobotGameEngineTest {
 
         Assert.assertEquals("T", engine.getItemLabel(Item.ITEM_2));
         Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_2));
-        Assert.assertEquals(Color.CYAN, engine.getItemColor(Item.ITEM_2));
+        Assert.assertEquals(Color.GREEN, engine.getItemColor(Item.ITEM_2));
 
         Assert.assertEquals("T", engine.getItemLabel(Item.ITEM_3));
         Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_3));
-        Assert.assertEquals(Color.CYAN, engine.getItemColor(Item.ITEM_3));
+        Assert.assertEquals(Color.GREEN, engine.getItemColor(Item.ITEM_3));
     }
 
     @Test

@@ -13,10 +13,10 @@ public class RobotGameEngine implements GameEngine {
 
     public RobotGameEngine() {
         objectMap = new HashMap<>();
-        objectMap.put(Item.ITEM_2, new GameObject("Tall bot 1", Location.START, Color.CYAN));
+        objectMap.put(Item.ITEM_2, new GameObject("Tall bot 1", Location.START, Color.GREEN));
         objectMap.put(Item.ITEM_1, new GameObject("Small bot 1", Location.START, Color.CYAN));
         objectMap.put(Item.ITEM_0, new GameObject("Small bot 2", Location.START, Color.CYAN));
-        objectMap.put(Item.ITEM_3, new GameObject("Tall bot 1", Location.START, Color.CYAN));
+        objectMap.put(Item.ITEM_3, new GameObject("Tall bot 1", Location.START, Color.GREEN));
 
         boatLocation = Location.START;
 

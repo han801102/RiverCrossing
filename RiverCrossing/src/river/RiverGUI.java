@@ -35,7 +35,8 @@ public class RiverGUI extends JPanel implements MouseListener {
     private final int boatHeight = 50;
     private final int boatMoveDistance = 410;
 
-    private final Rectangle restartButtonRect = new Rectangle(350, 120, 100, 30);
+    private final Rectangle farmerGameButtonRect = new Rectangle(300, 120, 80, 30);
+    private final Rectangle robotGameButtonRect = new Rectangle(420, 120, 80, 30);
 
     // ==========================================================
     // Private Fields
@@ -49,8 +50,7 @@ public class RiverGUI extends JPanel implements MouseListener {
     // ==========================================================
 
     public RiverGUI() {
-
-        engine = new RobotGameEngine();
+        engine = new FarmerGameEngine();
         addMouseListener(this);
     }
 
@@ -85,7 +85,8 @@ public class RiverGUI extends JPanel implements MouseListener {
         }
         paintMessage(message, g);
         if (restart) {
-            paintRestartButton(g);
+            paintRestartButton(g, "Farmer", farmerGameButtonRect);
+            paintRestartButton(g, "Robot", robotGameButtonRect);
         }
 
 
@@ -158,16 +159,6 @@ public class RiverGUI extends JPanel implements MouseListener {
         g.drawString(label, strXCoord, strYCoord);
     }
 
-    public void paintStringInRectangle(String str, int x, int y, int width, int height, Graphics g) {
-        g.setColor(Color.BLACK);
-        int fontSize = (height >= 40) ? 36 : 18;
-        g.setFont(new Font("Verdana", Font.BOLD, fontSize));
-        FontMetrics fm = g.getFontMetrics();
-        int strXCoord = x + width / 2 - fm.stringWidth(str) / 2;
-        int strYCoord = y + height / 2 + fontSize / 2 - 4;
-        g.drawString(str, strXCoord, strYCoord);
-    }
-
     public void paintMessage(String message, Graphics g) {
         g.setColor(Color.BLACK);
         g.setFont(new Font("Verdana", Font.BOLD, 36));
@@ -177,21 +168,10 @@ public class RiverGUI extends JPanel implements MouseListener {
         g.drawString(message, strXCoord, strYCoord);
     }
 
-    public void paintRestartButton(Graphics g) {
-        g.setColor(Color.BLACK);
-        paintBorder(restartButtonRect, 3, g);
+    public void paintRestartButton(Graphics g, String label, Rectangle rect) {
         g.setColor(Color.PINK);
-        paintRectangle(restartButtonRect, g);
-        paintStringInRectangle("Restart", restartButtonRect.x, restartButtonRect.y, restartButtonRect.width,
-                restartButtonRect.height, g);
-    }
-
-    public void paintBorder(Rectangle r, int thickness, Graphics g) {
-        g.fillRect(r.x - thickness, r.y - thickness, r.width + (2 * thickness), r.height + (2 * thickness));
-    }
-
-    public void paintRectangle(Rectangle r, Graphics g) {
-        g.fillRect(r.x, r.y, r.width, r.height);
+        g.fillRect(rect.x, rect.y, rect.width, rect.height);
+        paintLabelInRectangle(g, label, rect);
     }
 
     // ==========================================================
@@ -231,23 +211,17 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (this.restartButtonRect.contains(e.getPoint())) {
-            engine.resetGame();
+        if (restart && this.farmerGameButtonRect.contains(e.getPoint())) {
+            engine = new FarmerGameEngine();
             restart = false;
             repaint();
-        }
-
-        if (restart) {
-            if (this.restartButtonRect.contains(e.getPoint())) {
-                engine.resetGame();
-                restart = false;
-                repaint();
-            }
-            return;
-        }
-
-        if (boatRect.contains(e.getPoint())) {
+        } else if (restart && this.robotGameButtonRect.contains(e.getPoint())) {
+            engine = new RobotGameEngine();
+            restart = false;
+            repaint();
+        } else if (boatRect.contains(e.getPoint())) {
             engine.rowBoat();
+            repaint();
         } else {
             for (Item key : objRects.keySet()) {
                 if (objRects.get(key).contains(e.getPoint())) {
@@ -256,11 +230,10 @@ public class RiverGUI extends JPanel implements MouseListener {
                     } else {
                         engine.loadBoat(key);
                     }
+                    repaint();
                 }
             }
         }
-
-        repaint();
     }
 
     // ----------------------------------------------------------
