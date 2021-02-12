@@ -50,7 +50,7 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     public RiverGUI() {
 
-        engine = new FarmerGameEngine();
+        engine = new RobotGameEngine();
         addMouseListener(this);
     }
 
