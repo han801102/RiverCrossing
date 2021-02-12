@@ -106,7 +106,7 @@ public class RiverGUI extends JPanel implements MouseListener {
         int y;
         switch (engine.getItemLocation(id)) {
             case BOAT:
-                x = leftBoatX + (engine.getBoatLocation() == Location.FINISH ? boatMoveDistance : 0) + (passengers * 60 );
+                x = leftBoatX + (engine.getBoatLocation() == Location.FINISH ? boatMoveDistance : 0) + (passengers * 60);
                 y = leftBoatY - 60;
                 passengers++;
                 break;
@@ -247,9 +247,7 @@ public class RiverGUI extends JPanel implements MouseListener {
         }
 
         if (boatRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-                engine.rowBoat();
-            }
+            engine.rowBoat();
         } else {
             for (Item key : objRects.keySet()) {
                 if (objRects.get(key).contains(e.getPoint())) {

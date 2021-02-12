@@ -18,7 +18,7 @@ public class FarmerGameEngineTest {
     @Test
     public void testObjectCallThroughs() {
 
-        Assert.assertEquals("F", engine.getItemLabel(Item.ITEM_3));
+        Assert.assertEquals("", engine.getItemLabel(Item.ITEM_3));
         Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_3));
         Assert.assertEquals(Color.MAGENTA, engine.getItemColor(Item.ITEM_3));
 
@@ -36,9 +36,10 @@ public class FarmerGameEngineTest {
     }
 
     @Test
-    public void testMidTransport() {
+    public void testGooseTransport() {
         Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_1));
 
+        engine.loadBoat(Item.ITEM_3);
         engine.loadBoat(Item.ITEM_1);
         Assert.assertEquals(Location.BOAT, engine.getItemLocation(Item.ITEM_1));
 
@@ -94,6 +95,7 @@ public class FarmerGameEngineTest {
     @Test
     public void testLosingGame() {
         // transport the goose
+        engine.loadBoat(Item.ITEM_3);
         transport(Item.ITEM_1);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());
@@ -117,6 +119,7 @@ public class FarmerGameEngineTest {
     @Test
     public void testError() {
         // transport the goose
+        engine.loadBoat(Item.ITEM_3);
         transport(Item.ITEM_1);
         Assert.assertFalse(engine.gameIsLost());
         Assert.assertFalse(engine.gameIsWon());

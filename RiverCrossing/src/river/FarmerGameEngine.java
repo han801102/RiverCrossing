@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FarmerGameEngine implements GameEngine{
+public class FarmerGameEngine implements GameEngine {
 
     private Map<Item, GameObject> objectMap;
     private Location boatLocation;
@@ -24,7 +24,7 @@ public class FarmerGameEngine implements GameEngine{
     }
 
     public String getItemLabel(Item id) {
-        return objectMap.get(id).getLabel().substring(0, 1);
+        return id == Item.ITEM_3 ? "" : objectMap.get(id).getLabel().substring(0, 1);
     }
 
     public Location getItemLocation(Item id) {
@@ -55,6 +55,11 @@ public class FarmerGameEngine implements GameEngine{
 
     public void rowBoat() {
         assert (boatLocation != Location.BOAT);
+
+        if (!isBoatOperable()) {
+            return;
+        }
+
         if (boatLocation == Location.START) {
             boatLocation = Location.FINISH;
         } else {
@@ -103,4 +108,7 @@ public class FarmerGameEngine implements GameEngine{
         passengerSeats = 2;
     }
 
+    private boolean isBoatOperable() {
+        return objectMap.get(Item.ITEM_3).getLocation() == Location.BOAT;
+    }
 }
