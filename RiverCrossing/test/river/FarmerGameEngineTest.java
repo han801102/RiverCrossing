@@ -141,6 +141,31 @@ public class FarmerGameEngineTest {
         Assert.assertEquals(farmerLoc, engine.getItemLocation(Item.ITEM_3));
     }
 
+    @Test
+    public void testRowBoatWithoutFarmer() {
+        Location currentBoatLoc = engine.getBoatLocation();
+
+        engine.rowBoat();
+
+        Assert.assertEquals(currentBoatLoc, engine.getBoatLocation());
+    }
+
+    @Test
+    public void testResetGame() {
+        engine.loadBoat(Item.ITEM_3);
+        engine.rowBoat();
+
+        engine.resetGame();
+
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_0));
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_1));
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_2));
+        Assert.assertEquals(Location.START, engine.getItemLocation(Item.ITEM_3));
+        Assert.assertEquals(Location.START, engine.getBoatLocation());
+
+    }
+
+
     private void transport(Item id) {
         engine.loadBoat(id);
         engine.rowBoat();
